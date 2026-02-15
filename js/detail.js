@@ -35,18 +35,22 @@ async function fetchAnimeDetail() {
 
 // Renderizar detalle del anime
 function renderDetail(anime) {
+  const imageHTML = anime.images?.large_image_url
+    ? `<img src="${anime.images.large_image_url}" alt="${anime.title}" width="300">`
+    : "";
+
   detail.innerHTML = `
     <h2>${anime.title}</h2>
-    <img src="${anime.images.large_image_url}" alt="${anime.title}" width="300">
+    ${imageHTML}
 
     <h3>Titles</h3>
     <ul>
-      ${anime.titles.map(t => `<li>${t.title}</li>`).join("")}
+      ${anime.titles?.map(t => `<li>${t.title}</li>`).join("") || ""}
     </ul>
 
-    <p>${anime.synopsis}</p>
-    <p><strong>Started:</strong> ${anime.aired.from || "N/A"}</p>
-    <p><strong>Ended:</strong> ${anime.aired.to || "N/A"}</p>
+    <p>${anime.synopsis || "No synopsis available"}</p>
+    <p><strong>Started:</strong> ${anime.aired?.from || "N/A"}</p>
+    <p><strong>Ended:</strong> ${anime.aired?.to || "N/A"}</p>
   `;
 }
 

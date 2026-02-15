@@ -37,19 +37,19 @@ async function fetchAnimes() {
   }
 }
 
-// Renderizar animes en pantalla
+// Renderizar animes
 function renderAnimes(animes) {
   animeResults.innerHTML = "";
 
   animes.forEach((anime) => {
     const card = document.createElement("div");
 
-    const image =
-      anime.images?.large_image_url ||
-      "https://via.placeholder.com/200x300?text=No+Image";
+    const imageHTML = anime.images?.large_image_url
+      ? `<img src="${anime.images.large_image_url}" alt="${anime.title}" width="200">`
+      : "";
 
     card.innerHTML = `
-      <img src="${image}" alt="${anime.title}" width="200">
+      ${imageHTML}
       <h3>${anime.title}</h3>
       <p>${anime.synopsis || "No synopsis available"}</p>
       <a href="detail.html?id=${anime.mal_id}">
