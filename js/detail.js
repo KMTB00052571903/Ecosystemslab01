@@ -1,58 +1,43 @@
-// Obtener ID desde la URL
+const detailContainer = document.getElementById("detail");
+const loading = document.getElementById("loading");
+const error = document.getElementById("error");
+
+// Obtener el ID desde la URL
 const params = new URLSearchParams(window.location.search);
 const animeId = params.get("id");
 
-// Referencias al DOM
-const loading = document.getElementById("loading");
-const errorDiv = document.getElementById("error");
-const detail = document.getElementById("detail");
-
-// Obtener detalle del anime
 async function fetchAnimeDetail() {
-  if (!animeId) {
-    errorDiv.textContent = "Anime not found 📭";
-    loading.style.display = "none";
-    return;
-  }
-
   try {
-    const response = await fetch(
-      `https://api.jikan.moe/v4/anime/${animeId}/full`
-    );
+    loading.style.display = "block";
+    error.textContent = "";
+    detailContainer.innerHTML = "";
 
-    if (!response.ok) {
-      throw new Error("Error loading anime");
+    const res = await fetch(`https://api.jikan.moe/v4/anime/${animeId}`);
+    const data = await res.json();
+    const anime = data.data;
+
+    loading.style.display = "none";
+
+    if (!anime) {
+      detailContainer.innerHTML = "<p>No se encontró el anime.</p>";
+      return;
     }
 
-    const result = await response.json();
-    renderDetail(result.data);
-  } catch (error) {
-    errorDiv.textContent = "Error loading anime ❌";
-  } finally {
+    detailContainer.innerHTML = `
+      <h2>${anime.title}</h2>
+      <img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" width="250">
+      <p>${anime.synopsis || "Sin sinopsis disponible"}</p>
+      <p><strong>Fecha de inicio:</strong> ${anime.aired.from || "No disponible"}</p>
+      <p><strong>Fecha de finalización:</strong> ${anime.aired.to || "No disponible"}</p>
+      <h3>Títulos alternativos:</h3>
+      <ul>
+        ${anime.titles.map(t => `<li>${t.title}</li>`).join("")}
+      </ul>
+    `;
+  } catch (err) {
     loading.style.display = "none";
+    error.textContent = "Error: " + err.message;
   }
 }
 
-// Renderizar detalle del anime
-function renderDetail(anime) {
-  const imageHTML = anime.images?.large_image_url
-    ? `<img src="${anime.images.large_image_url}" alt="${anime.title}" width="300">`
-    : "";
-
-  detail.innerHTML = `
-    <h2>${anime.title}</h2>
-    ${imageHTML}
-
-    <h3>Titles</h3>
-    <ul>
-      ${anime.titles?.map(t => `<li>${t.title}</li>`).join("") || ""}
-    </ul>
-
-    <p>${anime.synopsis || "No synopsis available"}</p>
-    <p><strong>Started:</strong> ${anime.aired?.from || "N/A"}</p>
-    <p><strong>Ended:</strong> ${anime.aired?.to || "N/A"}</p>
-  `;
-}
-
-// Ejecutar al cargar la página
 fetchAnimeDetail();

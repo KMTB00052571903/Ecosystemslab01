@@ -1,65 +1,35 @@
-// Referencias al DOM
-const loading = document.getElementById("loading");
-const errorDiv = document.getElementById("error");
 const animeResults = document.getElementById("animeResults");
+const loading = document.getElementById("loading");
+const error = document.getElementById("error");
 
-// Mostrar estado de carga
-function showLoading() {
-  loading.style.display = "block";
-  errorDiv.style.display = "none";
-  animeResults.innerHTML = "";
-}
-
-// Mostrar error
-function showError(message) {
-  loading.style.display = "none";
-  errorDiv.style.display = "block";
-  errorDiv.textContent = message;
-}
-
-// Obtener lista de animes desde la API Jikan
-async function fetchAnimes() {
-  showLoading();
-
+async function fetchAnimeList() {
   try {
-    const response = await fetch("https://api.jikan.moe/v4/anime");
+    loading.style.display = "block";
+    error.style.display = "none";
+    animeResults.innerHTML = "";
 
-    if (!response.ok) {
-      throw new Error("Error fetching animes");
-    }
+    const res = await fetch("https://api.jikan.moe/v4/anime");
+    const data = await res.json();
 
-    const result = await response.json();
-    renderAnimes(result.data);
-  } catch (error) {
-    showError("Something went wrong ❌");
-  } finally {
     loading.style.display = "none";
+
+    data.data.forEach(anime => {
+      const div = document.createElement("div");
+      div.classList.add("anime-card");
+
+      div.innerHTML = `
+        <h2>${anime.title}</h2>
+        <img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" width="200">
+        <p>${anime.synopsis || "Sin sinopsis disponible"}</p>
+        <a href="detail.html?id=${anime.mal_id}">Ver más</a>
+      `;
+      animeResults.appendChild(div);
+    });
+  } catch (err) {
+    loading.style.display = "none";
+    error.style.display = "block";
+    error.textContent = "Error: " + err.message;
   }
 }
 
-// Renderizar animes
-function renderAnimes(animes) {
-  animeResults.innerHTML = "";
-
-  animes.forEach((anime) => {
-    const card = document.createElement("div");
-
-    const imageHTML = anime.images?.large_image_url
-      ? `<img src="${anime.images.large_image_url}" alt="${anime.title}" width="200">`
-      : "";
-
-    card.innerHTML = `
-      ${imageHTML}
-      <h3>${anime.title}</h3>
-      <p>${anime.synopsis || "No synopsis available"}</p>
-      <a href="detail.html?id=${anime.mal_id}">
-        <button>View details</button>
-      </a>
-    `;
-
-    animeResults.appendChild(card);
-  });
-}
-
-// Ejecutar al cargar la página
-fetchAnimes();
+fetchAnimeList();
