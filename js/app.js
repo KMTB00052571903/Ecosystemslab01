@@ -1,13 +1,18 @@
+
+//Obtiene referencias a los elementos del HTML con esos IDs.
+
 const animeResults = document.getElementById("animeResults");
 const loading = document.getElementById("loading");
 const error = document.getElementById("error");
 
+
+//Define una función asíncrona llamada fetchAnimeList. Es asíncrona porque usará await para esperar la respuesta de la API
 async function fetchAnimeList() {
-  try {
+  try {  ////bloque donde intentamos ejecutar el código. Si algo falla, saltará al catch
     loading.style.display = "block";
     error.style.display = "none";
     animeResults.innerHTML = "";
-
+//Hace una solicitud a la API de Jikan para obtener una lista de animes. Espera la respuesta y luego la convierte a formato JSON.
     const res = await fetch("https://api.jikan.moe/v4/anime");
     const data = await res.json();
 
