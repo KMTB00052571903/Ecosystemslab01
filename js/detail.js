@@ -18,6 +18,7 @@ async function fetchAnimeDetail() {
 
     loading.style.display = "none";
 
+    // Estado vacío
     if (!anime) {
       detailContainer.innerHTML = "<p>No se encontró el anime.</p>";
       return;
