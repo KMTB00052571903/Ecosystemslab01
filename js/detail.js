@@ -25,15 +25,18 @@ async function fetchAnimeDetail() {
     }
 
     detailContainer.innerHTML = `
-      <h2>${anime.title}</h2>
-      <img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" width="250">
-      <p>${anime.synopsis || "Sin sinopsis disponible"}</p>
-      <p><strong>Fecha de inicio:</strong> ${anime.aired.from || "No disponible"}</p>
-      <p><strong>Fecha de finalización:</strong> ${anime.aired.to || "No disponible"}</p>
-      <h3>Títulos alternativos:</h3>
-      <ul>
-        ${anime.titles.map(t => `<li>${t.title}</li>`).join("")}
-      </ul>
+      <img src="${anime.images.jpg.large_image_url}" alt="${anime.title}">
+      <div>
+        <h2>${anime.title}</h2>
+        <p>${anime.synopsis || "Sin sinopsis disponible"}</p>
+        <p><strong>Fecha de inicio:</strong> ${anime.aired.from || "No disponible"}</p>
+        <p><strong>Fecha de finalización:</strong> ${anime.aired.to || "No disponible"}</p>
+        <h3>Títulos alternativos:</h3>
+        <ul>
+          ${anime.titles.map(t => `<li>${t.title}</li>`).join("")}
+        </ul>
+        <a href="index.html">⬅ Back to the list</a>
+      </div>
     `;
   } catch (err) {
     loading.style.display = "none";

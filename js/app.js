@@ -32,7 +32,7 @@ async function fetchAnimeList() {
         <h2>${anime.title}</h2>
         <img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" width="200">
         <p>${shortSynopsis}</p>
-        <a href="detail.html?id=${anime.mal_id}">Ver más</a>
+        <a href="detail.html?id=${anime.mal_id}">View more</a>
       `;
       animeResults.appendChild(div);
     });

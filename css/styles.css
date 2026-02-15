@@ -14,8 +14,8 @@ h1 {
 
 h2 {
   color: #E94560;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
 }
 
 /* Contenedor de las cartas en la lista */
@@ -52,8 +52,9 @@ img {
 /* Texto */
 p {
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   text-align: justify;
+  line-height: 1.5;
 }
 
 /* Botones */
@@ -76,46 +77,58 @@ a:hover {
 /* --- Estilos para la página de detalle --- */
 #detail {
   display: grid;
-  grid-template-columns: 250px 1fr; /* Imagen más compacta */
-  gap: 20px;
+  grid-template-columns: 250px 1fr; /* Imagen + texto */
+  gap: 25px;
   background-color: #16213E;
   border-radius: 10px;
-  padding: 20px;
+  padding: 25px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.6);
   align-items: start;
 }
 
-/* Imagen en detalle */
 #detail img {
   border-radius: 10px;
   width: 100%;
-  max-width: 250px; /* Limitar tamaño máximo */
+  max-width: 250px;
   height: auto;
   object-fit: cover;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 
-/* Títulos alternativos */
+#detail p {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* Lista de títulos alternativos como chips */
 #detail ul {
   list-style: none;
   padding: 0;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap; /* Permite que se acomoden en varias filas */
+  gap: 10px;
 }
 
 #detail ul li {
   background-color: #0F3460;
-  margin: 5px 0;
-  padding: 8px;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 20px; /* Bordes redondeados tipo etiqueta */
   color: #fff;
+  font-size: 0.85rem;
+  display: inline-block;
+  max-width: 100%;
+  word-wrap: break-word; /* Si es muy largo, se parte en varias líneas */
 }
 
-/* Responsive: en pantallas pequeñas se apila */
+/* Responsive */
 @media (max-width: 768px) {
   #detail {
     grid-template-columns: 1fr;
   }
 
   #detail img {
-    max-width: 100%; /* En móvil ocupa todo el ancho */
+    max-width: 100%;
+    margin-bottom: 20px;
   }
 }
